@@ -35,7 +35,7 @@ const Home = () => {
       <h1>Lobby</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email ID: </label>
           <input
             id="email"
             type="email"
