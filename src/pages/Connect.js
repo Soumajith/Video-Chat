@@ -75,13 +75,14 @@ const Connect = () => {
 
   // call accepted by callee -> set local description (answer) and we already added tracks
   const handleCallAccepted = useCallback(
-    ({ from, ans }) => {
-      // ans is remote answer for us; set local description accordingly
-      peer.setLocalDescription(ans);
-      console.log("Call accepted by", from);
-    },
-    []
-  );
+  async ({ from, ans }) => {
+    await peer.setRemoteDescription(ans);
+    console.log("Call Accepted!");
+    await sendStreams();
+  },
+  [sendStreams]
+);
+
 
   // negotiationneeded handler — create and send offer for renegotiation
   const handleNegoNeeded = useCallback(async () => {
@@ -100,8 +101,10 @@ const Connect = () => {
 
   // final renegotiation answer
   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
-    await peer.setLocalDescription(ans);
+    // ans is a remote answer to the renegotiation offer — apply as remote description
+    await peer.setRemoteDescription(ans);
   }, []);
+
 
   // attach peer event listeners once peer exists
   useEffect(() => {
